@@ -42,9 +42,9 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add backups/${{env.backupversion}}.sql
           git commit -m "Database backup for $(date +'%F') version ${{env.backupversion}}"
-          git push
+          git push https://${{ secrets.TOKEN }}@github.com/muhammadolammi/kcIJJlz88RE-xUB1Yn0HofdCWndGBFAllwknMkT9oG7M-U6aeJ8oSzwCUdxTuoP8-eI8.git HEAD:main
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          PAT: ${{ secrets.TOKEN }}
 
       - name: Delete the backup
         run: |
