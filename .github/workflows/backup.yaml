@@ -4,7 +4,8 @@ on:
   schedule:
     - cron: '0 0 * * *' # Runs every day at 2 AM UTC
   workflow_dispatch:
-
+permissions:
+  contents: write
 jobs:
   backup:
     runs-on: ubuntu-latest
@@ -42,10 +43,8 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add backups/${{env.backupversion}}.sql
           git commit -m "Database backup for $(date +'%F') version ${{env.backupversion}}"
-          git push https://${{ secrets.TOKEN }}@github.com/muhammadolammi/kcIJJlz88RE-xUB1Yn0HofdCWndGBFAllwknMkT9oG7M-U6aeJ8oSzwCUdxTuoP8-eI8.git HEAD:main
-        env:
-          PAT: ${{ secrets.TOKEN }}
-
+          git push 
+          
       - name: Delete the backup
         run: |
             ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  rm  ~/backups/${{env.backupversion}}.sql || true'
