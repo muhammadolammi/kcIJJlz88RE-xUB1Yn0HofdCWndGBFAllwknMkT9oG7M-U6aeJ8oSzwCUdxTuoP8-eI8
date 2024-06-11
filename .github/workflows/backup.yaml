@@ -24,19 +24,16 @@ jobs:
       - name: SET version to gitenv
         run: echo "backupversion=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: URL Encode Password
-        id: encode_password
-        run: echo "ENCODED_PASSWORD=$(python3 -c 'import urllib.parse; print(urllib.parse.quote(\"${{ secrets.PG_PASSWORD }}\"))')" >> $GITHUB_ENV
-
+    
      
       - name: CREATE A BACKUP 
         run: |
-          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  docker exec db -U postgres  pg_dump muhammaddev  >> ~/backups/${{env.backupversion}} || true'
+          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  docker exec db pg_dump  -U postgres  muhammaddev  >> ~/backups/${{env.backupversion}}.sql || true'
 
       - name: COPY BACKUP
         run: |
           mkdir backups
-          scp i "secrets/key.pem" root@${{secrets.SERVER_IP}}~/backups/${{env.backupversion}}' ./backups
+          scp root@${{secrets.SERVER_IP}}~/backups/${{env.backupversion}}' ./backups
 
 
 
@@ -49,3 +46,5 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
