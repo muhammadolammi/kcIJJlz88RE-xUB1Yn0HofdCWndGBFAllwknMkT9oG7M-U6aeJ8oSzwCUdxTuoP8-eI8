@@ -31,12 +31,12 @@ jobs:
      
       - name: CREATE A BACKUP 
         run: |
-          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  docker exec db -U postgres  pg_dump muhammaddev  >> ~/backups/${{env.backupversion}}'
+          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  docker exec db -U postgres  pg_dump muhammaddev  >> ~/backups/${{env.backupversion}} || true'
 
       - name: COPY BACKUP
         run: |
           mkdir backups
-          scp  root@${{secrets.SERVER_IP}}~/backups/${{env.backupversion}}' ./backups
+          scp i "secrets/key.pem" root@${{secrets.SERVER_IP}}~/backups/${{env.backupversion}}' ./backups
 
 
 
