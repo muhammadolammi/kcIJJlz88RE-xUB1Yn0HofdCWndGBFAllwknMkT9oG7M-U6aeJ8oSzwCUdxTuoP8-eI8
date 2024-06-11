@@ -33,8 +33,6 @@ jobs:
 
       - name: CREATE A BACKUP 
         run: |
-          ls 
-          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' ' echo "hello world"'
           ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' ' pg_dump  ${{env.DATABASE_URL}} >> ~/backups/${{env.backupversion}}'
 
       - name: COPY BACKUP
