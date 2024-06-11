@@ -32,7 +32,7 @@ jobs:
 
       - name: COPY BACKUP
         run: |
-          scp root@${{secrets.SERVER_IP}}:~/backups/${{env.backupversion}}.sql' ./backups/
+            scp -o StrictHostKeyChecking=No -i "secrets/key.pem" ${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}}:~/backups/${{env.backupversion}}.sql ./backups/
 
 
 
