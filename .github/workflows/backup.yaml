@@ -18,8 +18,7 @@ jobs:
           mkdir secrets
           gpg --quiet --batch --yes --decrypt --passphrase="$gpgkey" --output secrets/key.pem key.pem.gpg
           chmod 600 "secrets/key.pem"
-          chmod +x file.sh
-     
+          
       
      
       - name: SET version to gitenv
@@ -30,7 +29,7 @@ jobs:
         run: echo "ENCODED_PASSWORD=$(python3 -c 'import urllib.parse; print(urllib.parse.quote(\"${{ secrets.PG_PASSWORD }}\"))')" >> $GITHUB_ENV
 
       - name: Construct Database URL
-        run: echo "DATABASE_URL=postgresql://${{ secrets.PG_USER }}:$ENCODED_PASSWORD@${{ secrets.PG_HOST }}/muhammaddev" >> $GITHUB_ENV
+        run: echo "DATABASE_URL=postgresql://${{ secrets.PG_USER }}:$ENCODED_PASSWORD@${{ secrets.SERVER_IP }}/muhammaddev" >> $GITHUB_ENV
 
       - name: CREATE A BACKUP 
         run: |
