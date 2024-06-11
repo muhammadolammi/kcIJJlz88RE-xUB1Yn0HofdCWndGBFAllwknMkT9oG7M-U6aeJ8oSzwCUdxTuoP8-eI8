@@ -40,10 +40,15 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add backups/${{env.backupversion}}
+          git add backups/${{env.backupversion}}.sql
           git commit -m "Database backup for $(date +'%F') version ${{env.backupversion}}"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete the backuo
+        run: |
+            ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  rm  ~/backups/${{env.backupversion}}.sql || true'
+  
 
 
