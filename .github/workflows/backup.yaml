@@ -44,7 +44,7 @@ jobs:
           git commit -m "Database backup for $(date +'%F') version ${{env.backupversion}}"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete the backup
         run: |
