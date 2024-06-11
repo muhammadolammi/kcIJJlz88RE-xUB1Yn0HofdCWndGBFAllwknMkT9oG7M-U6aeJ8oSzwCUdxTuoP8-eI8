@@ -32,7 +32,6 @@ jobs:
 
       - name: COPY BACKUP
         run: |
-          mkdir backups
           scp root@${{secrets.SERVER_IP}}:~/backups/${{env.backupversion}}.sql' ./backups/
 
 
