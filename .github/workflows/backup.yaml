@@ -28,12 +28,10 @@ jobs:
         id: encode_password
         run: echo "ENCODED_PASSWORD=$(python3 -c 'import urllib.parse; print(urllib.parse.quote(\"${{ secrets.PG_PASSWORD }}\"))')" >> $GITHUB_ENV
 
-      - name: Construct Database URL
-        run: echo "DATABASE_URL=postgresql://${{ secrets.PG_USER }}:$ENCODED_PASSWORD@${{ secrets.SERVER_IP }}/muhammaddev" >> $GITHUB_ENV
-
+     
       - name: CREATE A BACKUP 
         run: |
-          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' ' pg_dump  ${{env.DATABASE_URL}} >> ~/backups/${{env.backupversion}}'
+          ssh -o StrictHostKeyChecking=No -tt -i "secrets/key.pem" ${{secrets.SERVER_USER}}@'${{secrets.SERVER_IP}}' '  docker exec db -U postgres  pg_dump muhammaddev  >> ~/backups/${{env.backupversion}}'
 
       - name: COPY BACKUP
         run: |
